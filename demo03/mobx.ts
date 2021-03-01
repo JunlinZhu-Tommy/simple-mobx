@@ -4,9 +4,21 @@ const em = new EventEmitter();
 let currentFn;
 let obId = 1;
 
+/**
+ * 
+ * 
+ autorun(() => {
+  if (store.a === 2) {
+    console.log(store.b.c);
+  }
+  });
+ */
 const autorun = (fn) => {
+  console.log('AUTORUN ')
   const warpFn = () => {
     currentFn = warpFn;
+
+    // currentFn when call get
     fn();
     currentFn = null;
   }
@@ -26,6 +38,7 @@ const observable = (obj) => {
       const id = String(obId++);
       Object.defineProperty(obj, key, {
         get: function () {
+          console.log('register get callback event', key, currentFn)
           if (currentFn) {
             em.on(id, currentFn);
           }
@@ -34,6 +47,7 @@ const observable = (obj) => {
         set: function (v) {
           // 值不变时不触发
           if (obj[data][key] !== v) {
+            console.log('SET KEY and EMIT', key, v)
             obj[data][key] = v;
             em.emit(id);
           }

@@ -1,6 +1,6 @@
 import { observable, autorun } from './mobx';
 
-const store = observable({ a: 1, b: { c: 1 } });
+const store = observable({ a: 1, b: { c: 1 }, d: 4 });
 
 autorun(() => {
   if (store.a === 2) {
@@ -9,5 +9,7 @@ autorun(() => {
 });
 
 store.a = 2;
+
 store.b.c = 5;
+
 store.b.c = 6;
